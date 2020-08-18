@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.self.learn"/>
+    <context:property-placeholder location="classpath*:core.properties" />
+
+    <beans>
+        <bean id="incomeAccount" class="com.self.learn.financemodel.Income" >
+           <property name="totalAmount" value="${income.amount}" />
+        </bean>
+
+        <bean id="savingAccount" class="com.self.learn.financemodel.Saving">
+            <constructor-arg name="account" ref="incomeAccount"/>
+        </bean>
+
+        <bean id="livingCostAccount" class="com.self.learn.financemodel.LivingCost">
+            <constructor-arg name="account" ref="incomeAccount"/>
+        </bean>
+
+    </beans>
+
+</beans>
