@@ -1,4 +1,4 @@
-package com.self.learn.transaction.impl;
+package com.self.learn.transaction.base.impl;
 
 
 import com.self.learn.financemodel.base.Account;
@@ -24,5 +24,10 @@ public class Withdrawal extends BaseTransaction {
         this.toAccount.takeAway(amount);
         this.metaData.setAmount(amount);
         this.trackable.update(this.getMetaData());
+    }
+
+    @Override
+    protected String getType() {
+        return "WITHDRAWAL";
     }
 }

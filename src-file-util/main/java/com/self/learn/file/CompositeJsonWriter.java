@@ -1,8 +1,7 @@
 package com.self.learn.file;
 
-import com.self.learn.file.base.BaseWriter;
+import com.self.learn.file.base.BaseJsonWriter;
 import com.self.learn.file.base.Writer;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +21,4 @@ public class CompositeJsonWriter implements Writer {
         writers.stream().forEach(writer -> writer.write(content));
     }
 
-    @Override
-    public String fileName() {
-        return "null";
-    }
 }

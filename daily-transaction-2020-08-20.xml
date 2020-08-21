@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<transactions>
+    <transaction>
+        <id>1</id>
+        <submitted-time>2020-08-20</submitted-time>
+        <amount>100000</amount>
+        <submitted-by>Me</submitted-by>
+        <type-of-transaction>WITHDRAWAL</type-of-transaction>
+    </transaction>
+</transactions>

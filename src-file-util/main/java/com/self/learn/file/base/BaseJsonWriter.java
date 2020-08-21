@@ -8,16 +8,16 @@ import com.google.gson.stream.JsonReader;
 import java.io.Writer;
 import java.io.*;
 import java.lang.reflect.Type;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
-public abstract class BaseWriter<T> implements com.self.learn.file.base.Writer<T> {
+public abstract class BaseJsonWriter<T> implements com.self.learn.file.base.Writer<T> {
 
     protected static Gson parser = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void write(T content) {
-        File file = new File(fileName());
+        File file = new File(setUpFileName());
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -25,7 +25,7 @@ public abstract class BaseWriter<T> implements com.self.learn.file.base.Writer<T
         }
 
         try (JsonReader reader = new JsonReader(new FileReader(file))) {
-            ArrayList<T> types = extractTypesWith(reader);
+            ArrayList<Object> types = generateTypeArray(reader);
             try (Writer writer = new FileWriter(file.getAbsolutePath());) {
                 parser.toJson(bootstrapContent(content, types), writer);
             }
@@ -35,11 +35,14 @@ public abstract class BaseWriter<T> implements com.self.learn.file.base.Writer<T
     }
 
 
-    private ArrayList<T> extractTypesWith(JsonReader reader) {
-        Type userListType = new TypeToken<ArrayList<T>>() {}.getType();
-        ArrayList<T> array = parser.fromJson(reader, userListType);
-        return array == null ? new ArrayList<>() : array;
+    private ArrayList<Object> generateTypeArray(JsonReader reader) {
+        Type userListType = new TypeToken<ArrayList<Object>>() {
+        }.getType();
+        ArrayList<Object> array = parser.fromJson(reader, userListType);
+        return Objects.isNull(array) ? new ArrayList<>() : array;
     }
 
-    protected abstract Object bootstrapContent(T content, ArrayList<T> arr);
+    protected abstract Object bootstrapContent(T content, ArrayList<Object> arr);
+
+    protected abstract String setUpFileName();
 }

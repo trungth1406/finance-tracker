@@ -2,9 +2,8 @@ package com.self.learn.transaction.tracker.impl;
 
 import com.self.learn.file.base.Writer;
 import com.self.learn.transaction.tracker.base.Trackable;
-import com.self.learn.transaction.impl.TransactionMetaData;
+import com.self.learn.transaction.dto.TransactionMetaData;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
