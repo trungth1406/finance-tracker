@@ -104,3 +104,9 @@ hs_err_pid*
 .idea/vcs.xml
 target/generated-sources/
 
+src/main/resources/
+src/test/
+target/generated-sources/
+tomcat.8080/work/Tomcat/localhost/*/
+web/WEB-INF/spring/
+

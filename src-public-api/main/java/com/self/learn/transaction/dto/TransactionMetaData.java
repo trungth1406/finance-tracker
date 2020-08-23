@@ -1,7 +1,6 @@
 package com.self.learn.transaction.dto;
 
-import com.google.gson.JsonElement;
-import com.self.learn.file.adapter.TransactionAdapter;
+import com.self.learn.writer.adapter.TransactionAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;

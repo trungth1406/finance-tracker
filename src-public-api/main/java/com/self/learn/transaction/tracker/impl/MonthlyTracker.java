@@ -1,16 +1,16 @@
 package com.self.learn.transaction.tracker.impl;
 
-import com.self.learn.file.base.Writer;
+import com.self.learn.writer.base.Exporter;
 import com.self.learn.transaction.tracker.base.Trackable;
 import com.self.learn.transaction.dto.TransactionMetaData;
 
 
 public class MonthlyTracker implements Trackable {
 
-    private Writer writer;
+    private Exporter exporter;
 
-    public MonthlyTracker(Writer writer){
-        this.writer = writer;
+    public MonthlyTracker(Exporter exporter){
+        this.exporter = exporter;
     }
 
     public MonthlyTracker() {
@@ -18,6 +18,6 @@ public class MonthlyTracker implements Trackable {
 
     @Override
     public void update(TransactionMetaData metaData) {
-        writer.write(metaData);
+        exporter.export(null);
     }
 }
