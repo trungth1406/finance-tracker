@@ -1,10 +1,8 @@
 package com.self.learn.reader.type;
 
-import com.self.learn.TransactionDTO;
+import com.self.learn.dto.TransactionDTO;
 
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.util.List;
 
 public interface FileType {

@@ -24,7 +24,7 @@ public class JsonExporter implements Exporter {
 
 
     public JsonExporter() {
-        
+
     }
 
     public void export(TransactionMetaData content) {
@@ -67,17 +67,20 @@ public class JsonExporter implements Exporter {
     @Override
     public void export(InputStream is) {
         File file = findFile();
-        try(JsonWriter jsonWriter = new JsonWriter( new FileWriter(file))){
-            writeToFile(jsonWriter);
+        try (JsonWriter jsonWriter = new JsonWriter(new FileWriter(file))) {
+            writeToFile(jsonWriter,null);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private static void writeToFile(JsonWriter jsonWriter) throws IOException {
+    private static void writeToFile(JsonWriter jsonWriter,ObjectInputStream ois) throws IOException, ClassNotFoundException {
         jsonWriter.beginArray();
         jsonWriter.beginObject();
         jsonWriter.name("transaction");
+        Object o = ois.readObject();
         jsonWriter.endObject();
         jsonWriter.endArray();
     }

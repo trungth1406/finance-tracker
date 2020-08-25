@@ -1,4 +1,4 @@
-package com.self.learn;
+package com.self.learn.dto;
 
 import java.time.LocalDate;
 import java.util.List;
