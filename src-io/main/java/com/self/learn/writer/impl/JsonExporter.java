@@ -1,4 +1,4 @@
-package com.self.learn.writer;
+package com.self.learn.writer.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class JsonExporter implements Exporter {
+public class JsonExporter implements Exporter<InputStream> {
 
 
     private static Gson parser = new GsonBuilder().setPrettyPrinting().create();

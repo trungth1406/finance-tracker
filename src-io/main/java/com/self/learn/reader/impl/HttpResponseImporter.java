@@ -8,7 +8,7 @@ import java.io.InputStream;
 /**
  *
  */
-public class HttpResponseImporter extends BaseImporter<Object> implements Importer {
+public class HttpResponseImporter extends BaseImporter<Object> implements Importer<InputStream> {
 
 
     /**

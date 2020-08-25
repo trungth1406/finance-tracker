@@ -25,4 +25,14 @@ public class TransactionDTO {
     public void setProps(Map<String, String> props) {
         this.props = props;
     }
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("TransactionDTO{");
+        sb.append("performedDate=").append(performedDate);
+        sb.append(", props=").append(props);
+        sb.append('}');
+        return sb.toString();
+    }
 }

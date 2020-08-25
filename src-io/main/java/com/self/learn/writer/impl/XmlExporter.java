@@ -1,4 +1,4 @@
-package com.self.learn.writer;
+package com.self.learn.writer.impl;
 
 import com.self.learn.writer.base.Exporter;
 import com.self.learn.transaction.dto.TransactionMetaData;
@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.time.LocalDate;
 
-public class XmlExporter implements Exporter {
+public class XmlExporter implements Exporter<InputStream> {
 
     private static JAXBContext context;
 

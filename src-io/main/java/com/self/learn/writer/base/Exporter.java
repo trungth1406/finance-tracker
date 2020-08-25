@@ -9,9 +9,9 @@ import java.io.OutputStream;
 /**
  * 
  */
-public interface Exporter {
+public interface Exporter<T> {
 
-    void export(InputStream is);
+    void export(T is);
 
 
 

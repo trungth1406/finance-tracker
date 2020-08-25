@@ -13,7 +13,7 @@ import java.util.List;
 /**
  *
  */
-public class FileInputImporter extends BaseImporter<Object> implements Importer {
+public class FileInputImporter extends BaseImporter<Object> implements Importer<InputStream> {
 
     private FileType fromType;
     private Exporter toType;
@@ -28,7 +28,6 @@ public class FileInputImporter extends BaseImporter<Object> implements Importer 
      */
     public void importFrom(InputStream stream) {
         List<TransactionDTO> transformed = fromType.transform(stream);
-        PipedInputStream in = new PipedInputStream();
-//        toType.export(transformed);
+        toType.export(transformed);
     }
 }
