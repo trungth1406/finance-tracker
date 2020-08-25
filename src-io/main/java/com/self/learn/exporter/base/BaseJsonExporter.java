@@ -1,12 +1,10 @@
-package com.self.learn.writer.base;
+package com.self.learn.exporter.base;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
-import java.io.Writer;
-import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Objects;

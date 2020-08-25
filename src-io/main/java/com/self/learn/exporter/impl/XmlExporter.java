@@ -1,7 +1,6 @@
-package com.self.learn.writer;
+package com.self.learn.exporter.impl;
 
-import com.self.learn.writer.base.Exporter;
-import com.self.learn.transaction.dto.TransactionMetaData;
+import com.self.learn.exporter.base.Exporter;
 import com.self.learn.transaction.dto.Transactions;
 
 import javax.xml.bind.JAXBContext;
@@ -10,9 +9,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.InputStream;
-import java.time.LocalDate;
 
-public class XmlExporter implements Exporter {
+public class XmlExporter implements Exporter<InputStream> {
 
     private static JAXBContext context;
 

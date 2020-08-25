@@ -1,4 +1,4 @@
-package com.self.learn.reader.type;
+package com.self.learn.importer.type;
 
 import com.self.learn.dto.TransactionDTO;
 

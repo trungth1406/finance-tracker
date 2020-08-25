@@ -5,12 +5,12 @@ import java.io.InputStream;
 /**
  * 
  */
-public interface Importer {
+public interface Importer<T> {
 
     /**
      * @param stream
      */
-    public void importFrom(InputStream stream);
+    public void importFrom(T stream);
 
 
 }

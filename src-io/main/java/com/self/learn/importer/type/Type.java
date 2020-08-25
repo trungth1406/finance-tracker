@@ -1,7 +1,7 @@
-package com.self.learn.reader.type;
+package com.self.learn.importer.type;
 
-import com.self.learn.reader.type.impl.Excel;
-import com.self.learn.reader.type.impl.TextFile;
+import com.self.learn.importer.type.impl.Excel;
+import com.self.learn.importer.type.impl.TextFile;
 
 public enum Type {
 

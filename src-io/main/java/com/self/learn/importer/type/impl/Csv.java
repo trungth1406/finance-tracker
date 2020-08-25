@@ -1,7 +1,7 @@
-package com.self.learn.reader.type.impl;
+package com.self.learn.importer.type.impl;
 
 import com.self.learn.dto.TransactionDTO;
-import com.self.learn.reader.type.FileType;
+import com.self.learn.importer.type.FileType;
 
 import java.io.*;
 import java.util.List;

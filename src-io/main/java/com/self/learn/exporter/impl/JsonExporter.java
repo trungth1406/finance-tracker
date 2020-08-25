@@ -1,11 +1,11 @@
-package com.self.learn.writer;
+package com.self.learn.exporter.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.self.learn.writer.base.Exporter;
+import com.self.learn.exporter.base.Exporter;
 import com.self.learn.transaction.dto.TransactionMetaData;
 
 import java.io.*;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class JsonExporter implements Exporter {
+public class JsonExporter implements Exporter<InputStream> {
 
 
     private static Gson parser = new GsonBuilder().setPrettyPrinting().create();

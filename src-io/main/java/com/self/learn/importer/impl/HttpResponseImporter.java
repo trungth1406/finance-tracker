@@ -1,14 +1,14 @@
-package com.self.learn.reader.impl;
+package com.self.learn.importer.impl;
 
 import com.self.learn.transaction.reader.Importer;
-import com.self.learn.reader.base.BaseImporter;
+import com.self.learn.importer.base.BaseImporter;
 
 import java.io.InputStream;
 
 /**
  *
  */
-public class HttpResponseImporter extends BaseImporter<Object> implements Importer {
+public class HttpResponseImporter extends BaseImporter<Object> implements Importer<InputStream> {
 
 
     /**

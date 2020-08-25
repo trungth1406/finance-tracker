@@ -1,4 +1,4 @@
-package com.self.learn.writer.adapter;
+package com.self.learn.exporter.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDate;
