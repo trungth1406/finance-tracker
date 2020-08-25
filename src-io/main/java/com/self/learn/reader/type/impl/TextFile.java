@@ -6,10 +6,7 @@ import com.self.learn.reader.type.FileType;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TextFile implements FileType {
 
@@ -23,19 +20,15 @@ public class TextFile implements FileType {
     public List<TransactionDTO> transform(InputStream inputStream) {
         List<TransactionDTO> transformedDtos = new ArrayList<>();
         TransactionDTO dtoObject;
+        Map<String, String> props;
         try (LineNumberReader reader = new LineNumberReader(new InputStreamReader(inputStream))) {
-            Map<String, String> props;
             String line = reader.readLine();
             while (line != null) {
+                if (line.isEmpty()) continue;
                 dtoObject = new TransactionDTO();
                 props = new HashMap<>();
-                if (!isNotDate(line)) {
-                    dtoObject.setPerformedDate(extractDate(line));
-                }
-                while (isNotDate(line) || line.isEmpty()) {
-                    handleProperty(line, props);
-                    line = reader.readLine();
-                }
+                dtoObject.setPerformedDate(extractDate(line));
+                dtoObject.setProps(extractProperties(reader, props));
                 transformedDtos.add(dtoObject);
                 line = reader.readLine();
             }
@@ -45,10 +38,6 @@ public class TextFile implements FileType {
         return transformedDtos;
     }
 
-    private static boolean isNotDate(String line) {
-        char ch = line.charAt(0);
-        return Character.isAlphabetic(ch) || !Character.isLetterOrDigit(ch);
-    }
 
     private static LocalDate extractDate(String line) {
         String formatted = processDateFormat(line);
@@ -58,35 +47,48 @@ public class TextFile implements FileType {
 
     private static String processDateFormat(String line) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < line.length(); i++) {
-            if (Character.isDigit(line.charAt(i)) && Integer.parseInt(String.valueOf(line.charAt(i))) < 10) {
+        String[] splitted = line.split("/");
+        for (String s : splitted) {
+            if (Integer.parseInt(s) < 10) {
                 sb.append('0');
-
             }
-            sb.append(line.charAt(i));
+            sb.append(s);
+            sb.append("/");
         }
-        sb.append("/");
         sb.append(LocalDate.now().getYear());
         return sb.toString();
     }
 
-    private static void handleProperty(String line, Map<String, String> props) {
-        int endOfKey = endOfPropName(line);
-        props.put(extractValue(line, 0, endOfKey + 1), extractValue(line, endOfKey + 1, line.length()));
+    private static Map<String, String> extractProperties(LineNumberReader reader, Map<String, String> props) throws IOException {
+        reader.mark(0);
+        String newLine = reader.readLine();
+        if (Objects.isNull(newLine) || newLine.isEmpty()) {
+            return props;
+        } else if (isLineDate(newLine)) {
+            reader.reset();
+            return props;
+        }
+        splitKeyAndValue(props, newLine);
+        return extractProperties(reader, props);
     }
 
-    private static String extractValue(String line, int start, int end) {
-        return line.subSequence(start, end).toString();
+    private static boolean isLineDate(String line) {
+        return Character.isDigit(line.charAt(0)) && line.contains("/");
     }
 
-    private static int endOfPropName(String line) {
-        for (int i = line.length() - 1; i >= 0; i--) {
-            if (Character.isAlphabetic(line.charAt(i))) {
-                return i;
+    private static void splitKeyAndValue(Map<String, String> props, String line) {
+        char[] chars = line.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < chars.length; i++) {
+            if (isCharacter(chars[i])) {
+                sb.append(chars[i]);
             }
         }
-        return -1;
+        props.put(sb.toString(), line.substring(sb.length()));
     }
 
+    private static boolean isCharacter(char aChar) {
+        return !Character.isDigit(aChar);
+    }
 
 }

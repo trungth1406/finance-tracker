@@ -7,7 +7,7 @@ import java.util.Map;
 public class TransactionDTO {
 
     private LocalDate performedDate;
-    private Map<String,Integer> props;
+    private Map<String,String> props;
 
     public LocalDate getPerformedDate() {
         return performedDate;
@@ -18,11 +18,11 @@ public class TransactionDTO {
     }
 
 
-    public Map<String, Integer> getProps() {
+    public Map<String, String> getProps() {
         return props;
     }
 
-    public void setProps(Map<String, Integer> props) {
+    public void setProps(Map<String, String> props) {
         this.props = props;
     }
 }
