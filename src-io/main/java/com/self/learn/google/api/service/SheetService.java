@@ -1,7 +1,7 @@
 package com.self.learn.google.api.service;
 
 import com.google.api.services.sheets.v4.Sheets;
-import com.self.learn.google.api.GoogleSheetConfiguration;
+import com.self.learn.google.api.config.GoogleSheetConfiguration;
 
 import java.io.IOException;
 import java.util.List;
