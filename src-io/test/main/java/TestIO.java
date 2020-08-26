@@ -1,14 +1,8 @@
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.Spreadsheet;
-import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
+import com.google.api.services.sheets.v4.model.ValueRange;
 import com.self.learn.google.api.GoogleSheetConfiguration;
+import com.self.learn.google.api.service.BaseSheetService;
+import com.self.learn.google.api.service.SheetService;
 import com.self.learn.importer.impl.FileInputImporter;
 import com.self.learn.importer.type.Type;
 import com.self.learn.transaction.reader.Importer;
@@ -18,7 +12,8 @@ import org.junit.Test;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 
 public class TestIO {
 
@@ -33,12 +28,37 @@ public class TestIO {
 
     @Test
     public void testGgSheets() throws GeneralSecurityException, IOException {
-        GoogleSheetConfiguration configuration = GoogleSheetConfiguration.setUp("google-sheet.properties");
+        GoogleSheetConfiguration configuration = GoogleSheetConfiguration.getInstance("google-sheet.properties");
         GoogleSheetConfiguration.getSheetService();
     }
 
 
+    @Test
+    public void testReading() throws GeneralSecurityException, IOException {
+        GoogleSheetConfiguration.getInstance("google-sheet.properties");
+        final Sheets sheetService = GoogleSheetConfiguration.getSheetService();
+        ValueRange range = sheetService.spreadsheets().values().get("12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk", "Tháng 8!A2:D10").execute();
+        for (List row : range.getValues()) {
+            System.out.println(row);
+        }
+
+    }
 
 
+    @Test
+    public void testReadService() throws IOException {
+        SheetService sheetService = new BaseSheetService();
+        List<List<Object>> objs = sheetService.read("12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk", "Tháng 8", "A2:D10");
+        objs.stream().forEach(System.out::println);
+        Assert.assertNotNull(objs);
+    }
+
+
+    @Test
+    public void testAppend() throws IOException {
+        SheetService sheetService = new BaseSheetService();
+        List<List<Object>> values = Arrays.asList(Arrays.asList("Test", "From", "Thực phẩm/Ăn uống","10"));
+        sheetService.append(values, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk","Tháng 8");
+    }
 
 }

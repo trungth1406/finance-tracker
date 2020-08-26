@@ -37,10 +37,14 @@
       <sourceFolder url="file://$MODULE_DIR$/src-io/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src-io/test/main/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src-io/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src-io/test/main/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client-jetty:1.31.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client-java6:1.31.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.apis:google-api-services-docs:v1-rev20200803-1.30.10" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:5.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.1.8.RELEASE" level="project" />

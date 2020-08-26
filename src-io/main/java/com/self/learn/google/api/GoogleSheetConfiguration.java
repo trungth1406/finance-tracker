@@ -14,13 +14,12 @@ import com.self.learn.google.api.service.SheetService;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 
-public class GoogleSheetConfiguration {
+public final class GoogleSheetConfiguration {
 
+    private volatile static GoogleSheetConfiguration INSTANCE = null;
 
     private static Properties properties;
 
@@ -28,31 +27,39 @@ public class GoogleSheetConfiguration {
         this.properties = properties;
     }
 
-    public static GoogleSheetConfiguration setUp(String fileName)  {
-        try( InputStream reader = GoogleSheetConfiguration.class.getResourceAsStream(fileName)) {
-            properties = new Properties();
-            properties.load(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static GoogleSheetConfiguration getInstance(String fileName) {
+        if (Objects.isNull(INSTANCE)) {
+            try (InputStream is = GoogleSheetConfiguration.class.getClassLoader().getResourceAsStream(fileName)) {
+                properties = new Properties();
+                properties.load(is);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new GoogleSheetConfiguration(properties);
         }
-
-        return new GoogleSheetConfiguration(properties);
+        return INSTANCE;
     }
 
 
-    public static Sheets getSheetService() throws IOException, GeneralSecurityException {
-        Credential credential = authorize();
-        return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(),
-                JacksonFactory.getDefaultInstance(), credential).
-                setApplicationName(properties.getProperty("application.name")).
-                build();
+    public static Sheets getSheetService() {
+
+        try {
+            Credential credential = authorize();
+            return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(),
+                    JacksonFactory.getDefaultInstance(), credential).
+                    setApplicationName(properties.getProperty("application.name")).
+                    build();
+        } catch (IOException | GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+        return (Sheets) Optional.empty().get();
     }
 
 
     private static Credential authorize() throws IOException, GeneralSecurityException {
-        InputStream in = SheetService.class.getResourceAsStream(properties.getProperty("file.path"));
+        InputStream in = SheetService.class.getClassLoader().getResourceAsStream(properties.getProperty("file.path"));
         GoogleClientSecrets secrets =
                 GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), new InputStreamReader(in));
         List<String> scopes = Arrays.asList(SheetsScopes.SPREADSHEETS);
