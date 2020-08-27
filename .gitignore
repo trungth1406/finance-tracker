@@ -110,3 +110,6 @@ target/generated-sources/
 tomcat.8080/work/Tomcat/localhost/*/
 web/WEB-INF/spring/
 
+tokens
+src-io/main/resources/credentials.json
+src-io/test/main/resources/credentials.json
