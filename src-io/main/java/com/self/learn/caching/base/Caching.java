@@ -1,4 +1,4 @@
-package com.self.learn.caching;
+package com.self.learn.caching.base;
 
 import java.util.*;
 

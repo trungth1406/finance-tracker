@@ -1,7 +1,7 @@
 package com.self.learn.importer.impl;
 
-import com.self.learn.caching.Modification;
-import com.self.learn.caching.Observer;
+import com.self.learn.caching.base.Modification;
+import com.self.learn.caching.base.Observer;
 import com.self.learn.dto.TransactionDTO;
 import com.self.learn.importer.type.FileType;
 import com.self.learn.importer.type.Type;
@@ -10,7 +10,6 @@ import com.self.learn.importer.base.BaseImporter;
 import com.self.learn.exporter.base.Exporter;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,11 +35,12 @@ public class FileInputImporter extends BaseImporter<Object> implements Importer<
 
     @Override
     public void updateContent(InputStream in) {
-
+        List<TransactionDTO> transformed = fromType.transform(in);
+        toType.export(transformed);
     }
 
     @Override
     public void updateContent(Modification[] mods) {
-        
+
     }
 }

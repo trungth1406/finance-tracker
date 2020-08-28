@@ -1,7 +1,7 @@
 package com.self.learn.caching;
 
-import com.self.learn.caching.Caching;
-import com.self.learn.caching.Modification;
+import com.self.learn.caching.base.Caching;
+import com.self.learn.caching.base.Modification;
 
 import java.util.*;
 
