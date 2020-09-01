@@ -1,80 +1,25 @@
-1/8
-- as 75
-- khám 40
-- dg am 300
-- cháo 50
-- a tối 40
-- quang hanh 46
-2/8
-- á: bánh mì 50
-- túi 64
-3/8
-- as 50
-- bóng đèn 34
-- đồ shop 34
-- bmi 9
-4/8
- - as 50
-- trppod 69
-5/8
--as 50
-- xăng 50
-6/8
-as 27
-ăn cỗ 300
-cccd 45
-Femon 1480
-7/8
-bánh chiều 9
-8/8
-nước 30
-xăng 50
-9/8
-bánh quẩy 30
-bọc hàng 20
-as 80
-10/8
-xăng 46
-bánh chiều 10
-as 53
-bánh chưng 65
-11/8
-as 39k
-phí ship hàng 10
-sách cho bố và Sushi thân thương 307
-12/8
-bánh chiều 10
-bánh tr thu 52
-bmi sanzg 45
-phí ship 10
-13/8
-áomwa 130
-as 50+24
-14/8
-15/8
-hoa quả 25
-bánh tráng 48
-chè 46
-16/8
-chè dừa20
-quẩy 10
-cvien 9
-cây giống 6
-17/8
-bánh chiều 10
-18/8
-bánh chiều 10
-as 25
-đổ xăng 40
-19/8
-as bmi 45
-20/8
-as b Mai 50
-21/8
-bánh cosi 9
-22/8
-khám thai 300
 23/8
 khám dung nạp 350
 as 55
 lấy ráy tai 13
+24/8
+bánh cuốn 15
+bánh mì 10
+25/8
+26/8
+as 30
+bánh custard. cosy 45
+bánh chiều 10
+27/8
+as bà Mai 50
+28/8
+as 30
+29/8
+as Bà Mai 60
+quang hanh 41
+bút mực 42
+30/8
+bánh cuốn 50
+sáp vuốt tóc 53
+sữa bánh 64
+bàn chải 40

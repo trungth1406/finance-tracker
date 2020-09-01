@@ -1,9 +1,5 @@
 package com.self.learn.caching.state;
 
-import com.self.learn.caching.base.Modification;
-
-import java.util.*;
-
 /**
  *
  */

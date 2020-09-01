@@ -1,17 +1,17 @@
-package com.self.learn.caching.base;
+package com.self.learn.watcher.base;
 
 import java.util.*;
 
 /**
  * 
  */
-public interface ContentWatcher {
+public interface Watcher {
 
 
     /**
      * 
      */
-    public void notifyOserver();
+    public void notifyObserver();
 
     /**
      * 

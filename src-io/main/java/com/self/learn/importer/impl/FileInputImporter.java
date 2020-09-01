@@ -1,7 +1,7 @@
 package com.self.learn.importer.impl;
 
-import com.self.learn.caching.base.Modification;
-import com.self.learn.caching.base.Observer;
+import com.self.learn.caching.state.Modification;
+import com.self.learn.caching.base.ContentObserver;
 import com.self.learn.dto.TransactionDTO;
 import com.self.learn.importer.type.FileType;
 import com.self.learn.importer.type.Type;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  *
  */
-public class FileInputImporter extends BaseImporter<Object> implements Importer<InputStream>, Observer {
+public class FileInputImporter extends BaseImporter<Object> implements Importer<InputStream>, ContentObserver {
 
     private FileType fromType;
     private Exporter toType;

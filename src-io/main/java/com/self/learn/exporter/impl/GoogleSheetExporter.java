@@ -32,8 +32,8 @@ public class GoogleSheetExporter implements Exporter<List<TransactionDTO>> {
     }
 
     @Override
-    public void export(List<TransactionDTO> is) {
-        List<List<Object>> rangeValues = convertToValueRanges(is);
+    public void export(List<TransactionDTO> inputStream) {
+        List<List<Object>> rangeValues = convertToValueRanges(inputStream);
         exportToGoogleSheet(rangeValues);
     }
 
