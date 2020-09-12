@@ -1,4 +1,4 @@
-package com.self.learn.caching.state;
+package com.self.learn.state;
 
 /**
  *
@@ -6,8 +6,8 @@ package com.self.learn.caching.state;
 public abstract class Modification {
 
 
-    public Modification(int lineNumer, String content) {
-        this.lineNumer = lineNumer;
+    public Modification(int lineNumber, String content) {
+        this.lineNumer = lineNumber;
         this.content = content;
     }
 

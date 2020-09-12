@@ -1,5 +1,5 @@
-import com.self.learn.caching.state.Modification;
-import com.self.learn.caching.state.Create;
+import com.self.learn.state.Modification;
+import com.self.learn.state.Create;
 import org.junit.Assert;
 import org.junit.Test;
 

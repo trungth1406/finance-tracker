@@ -1,6 +1,6 @@
 package com.self.learn.importer.impl;
 
-import com.self.learn.caching.state.Modification;
+import com.self.learn.state.Modification;
 import com.self.learn.caching.base.ContentObserver;
 import com.self.learn.dto.TransactionDTO;
 import com.self.learn.importer.type.FileType;

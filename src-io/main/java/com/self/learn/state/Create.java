@@ -1,4 +1,4 @@
-package com.self.learn.caching.state;
+package com.self.learn.state;
 
 /**
  *

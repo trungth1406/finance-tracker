@@ -1,8 +1,7 @@
 package com.self.learn.watcher.notifier;
 
-import com.google.common.base.Objects;
-import com.self.learn.caching.state.Modification;
-import com.self.learn.caching.state.Create;
+import com.self.learn.state.Modification;
+import com.self.learn.state.Create;
 
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;

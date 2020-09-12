@@ -1,6 +1,6 @@
 package com.self.learn.caching.base;
 
-import com.self.learn.caching.state.Modification;
+import com.self.learn.state.Modification;
 
 import java.io.InputStream;
 
@@ -10,12 +10,12 @@ import java.io.InputStream;
 public interface ContentObserver {
 
     /**
-     * @param InputStream
+     * @param in
      */
     public void updateContent(InputStream in);
 
     /**
-     * @param Modification[*]
+     * @param mods
      */
     public void updateContent(Modification[] mods);
 

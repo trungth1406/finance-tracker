@@ -3,6 +3,7 @@ package com.self.learn.watcher.notifier;
 import com.self.learn.watcher.base.EventNotifier;
 import com.self.learn.watcher.base.EventObserver;
 import com.self.learn.watcher.base.Watcher;
+import com.self.learn.watcher.filter.EventHandler;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -36,6 +37,7 @@ public final class WatchServiceNotifier implements Runnable, EventNotifier {
 
     public void run() {
         WatchKey key;
+        this.eventObserver.add(new EventHandler());
         while (true) {
             try {
                 if (!((key = watchService.take()) != null)) break;
@@ -48,6 +50,10 @@ public final class WatchServiceNotifier implements Runnable, EventNotifier {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new Thread(WatchServiceNotifier.from(Paths.get("/Users/trungtran/Personal/Projects/finance-tracker-core/"),null)).start();
     }
 
     public void notifyRequest(WatchEvent watchEvent) {
