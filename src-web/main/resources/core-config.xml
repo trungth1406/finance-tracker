@@ -20,6 +20,10 @@
             <constructor-arg name="account" ref="incomeAccount"/>
         </bean>
 
+        <bean id="versionCache" class="com.self.learn.caching.base.CachingProxyImpl">
+
+        </bean>
+
 
     </beans>
 

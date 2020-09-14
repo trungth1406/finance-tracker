@@ -1,7 +1,7 @@
 package com.self.learn.watcher.impl;
 
 import com.self.learn.state.Modification;
-import com.self.learn.caching.base.ContentObserver;
+import com.self.learn.importer.ContentObserver;
 import com.self.learn.watcher.base.Watcher;
 
 import java.io.FileInputStream;

@@ -16,9 +16,11 @@ public class EventHandler implements EventObserver {
     @Override
     public synchronized void processWith(WatchEvent watchEvent) {
         if (isOfType(StandardWatchEventKinds.ENTRY_CREATE, watchEvent)) {
-            this.filter = new NewFileFilter();
+            this.filter = new NewFileHandler();
         } else if (isOfType(StandardWatchEventKinds.ENTRY_MODIFY, watchEvent)) {
-            this.filter = new FileModificationHandler();
+            this.filter = new FileModHandler();
+        }else{
+            return;
         }
         this.filter.process(watchEvent.context().toString());
     }

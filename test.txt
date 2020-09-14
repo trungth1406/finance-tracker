@@ -23,3 +23,5 @@ bánh cuốn 50
 sáp vuốt tóc 53
 sữa bánh 64
 bàn chải 40
+addedd 10
+add some more 20

@@ -7,6 +7,8 @@ public class FileVersion {
 
     private String versionNumber;
     private LocalDate lastModified;
+    private String fileId;
+    private String sheetId;
     private VersionContent versionContent;
 
     public FileVersion(String versionNumber, LocalDate lastModified, VersionContent versionContent) {
