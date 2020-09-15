@@ -33,6 +33,7 @@ public class Line {
         int[][] countTable = longestSubSequenceTable(this.content, that.content);
         StringBuilder sb = new StringBuilder();
         String mod = genDiff(sb, countTable, this.content, that.content, this.length(), that.length());
+        System.out.println(mod);
         return getModification(that.content,mod, that.lineNumber);
     }
 

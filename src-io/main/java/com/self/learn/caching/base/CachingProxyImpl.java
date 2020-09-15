@@ -15,42 +15,44 @@ import java.util.*;
 public class CachingProxyImpl implements CachingProxy<Queue<Line>> {
 
 
-    private CacheManager cacheManager;
-    private Cache<String, List> fileVersionCache;
+    private static CachingProxyImpl INSTANCE = null;
+    private static final CacheManager cacheManager = initCacheManager().build();
+    private static Cache<String, LinkedList> fileVersionCache;
 
-    public CachingProxyImpl() {
-        this.cacheManager = initCacheManager().build();
-        this.cacheManager.init();
-
-        this.fileVersionCache = this.cacheManager.getCache("fileVersion",
-                String.class, List.class);
+    public static CachingProxyImpl getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new CachingProxyImpl();
+            cacheManager.init();
+            fileVersionCache = cacheManager.getCache("fileVersion",
+                    String.class, LinkedList.class);
+        }
+        return INSTANCE;
     }
 
     private static CacheManagerBuilder<CacheManager> initCacheManager() {
         return CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("fileVersion",
-                        CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                                String.class, List.class,
+                        CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, LinkedList.class,
                                 ResourcePoolsBuilder.heap(10).build()));
     }
 
 
-    public Cache<String, List> getFileVersionCache() {
+    public Cache<String, LinkedList> getFileVersionCache() {
         return fileVersionCache;
     }
 
 
     @Override
     public void updateCacheContent(String cacheName, Queue<Line> lines) {
-        List<Queue<Line>> cachedQueue = this.fileVersionCache.get(cacheName);
-        if (cachedQueue == null) cachedQueue = new ArrayList<>();
+        LinkedList<Queue<Line>> cachedQueue = this.fileVersionCache.get(cacheName);
+        if (cachedQueue == null) cachedQueue = new LinkedList<>();
         cachedQueue.add(lines);
         this.fileVersionCache.put(cacheName, cachedQueue);
     }
 
     @Override
     public void createNewCache(String cacheName, Queue<Line> lines) {
-        List<Queue<Line>> cachedQueue = new ArrayList<>();
+        LinkedList<Queue<Line>> cachedQueue = new LinkedList<>();
         cachedQueue.add(lines);
         this.fileVersionCache.put(cacheName, cachedQueue);
     }
@@ -58,6 +60,9 @@ public class CachingProxyImpl implements CachingProxy<Queue<Line>> {
     @Override
     public Queue<Line> getLastCachedContent(String cacheName) {
         List<Queue<Line>> cachedQueue = this.fileVersionCache.get(cacheName);
-        return Optional.of(cachedQueue.get(cachedQueue.size() - 1)).orElse(Queues.newArrayDeque());
+        if (Optional.ofNullable(cachedQueue).isPresent()) {
+            return cachedQueue.get(0);
+        }
+        return Queues.newArrayDeque();
     }
 }
