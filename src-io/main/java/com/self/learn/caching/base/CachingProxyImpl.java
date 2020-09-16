@@ -45,7 +45,6 @@ public class CachingProxyImpl implements CachingProxy<Queue<Line>> {
     @Override
     public void updateCacheContent(String cacheName, Queue<Line> lines) {
         LinkedList<Queue<Line>> cachedQueue = this.fileVersionCache.get(cacheName);
-        if (cachedQueue == null) cachedQueue = new LinkedList<>();
         cachedQueue.add(lines);
         this.fileVersionCache.put(cacheName, cachedQueue);
     }

@@ -25,3 +25,11 @@ sữa bánh 64
 bàn chải 40
 addedd 10
 add some more 20
+new 123
+ss 22
+Why misisng one line 111
+fixed 1 character missing 1234
+last line 1233
+ok dont forget readline return new line 1
+wtf 12
+wtfp 22
