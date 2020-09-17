@@ -1,17 +1,14 @@
 package com.self.learn.version;
 
-import com.self.learn.state.Create;
-import com.self.learn.state.Delete;
-import com.self.learn.state.Modification;
-import com.self.learn.state.Update;
+import com.self.learn.state.*;
 
 import java.util.Arrays;
 
-public class Line {
+public class LineVersion {
     private String content;
     private int lineNumber;
 
-    public Line(String content, int lineNumber) {
+    public LineVersion(String content, int lineNumber) {
         this.content = content;
         this.lineNumber = lineNumber;
     }
@@ -29,7 +26,9 @@ public class Line {
     }
 
 
-    public Modification diff(Line that) {
+    public Modification diff(LineVersion that) {
+        this.content = purgeContent(this.content);
+        that.content = purgeContent(that.content);
         int[][] countTable = longestSubSequenceTable(this.content, that.content);
         StringBuilder sb = new StringBuilder();
         String mod = genDiff(sb, countTable, this.content, that.content, this.length(), that.length());
@@ -45,7 +44,11 @@ public class Line {
         } else if (modified.contains("-")) {
             return new Delete(lineNumber, original);
         }
-        return null;
+        return new Unchanged(lineNumber, original);
+    }
+
+    private static String purgeContent(String content) {
+        return content.replace("-", "");
     }
 
     private static String genDiff(StringBuilder sb, int[][] countTable, String s1, String s2, int s1Len, int s2Len) {
@@ -56,7 +59,7 @@ public class Line {
             sb.append(" +" + s2.charAt(s2Len - 1));
             return genDiff(sb, countTable, s1, s2, s1Len, s2Len - 1);
         } else if (s1Len > 0 && (s2Len == 0 || countTable[s1Len][s2Len - 1] > countTable[s1Len - 1][s2Len])) {
-            sb.append(  " -" + s1.charAt(s1Len - 1));
+            sb.append(" -" + s1.charAt(s1Len - 1));
             return genDiff(sb, countTable, s1, s2, s1Len - 1, s2Len);
         }
         return sb.toString();

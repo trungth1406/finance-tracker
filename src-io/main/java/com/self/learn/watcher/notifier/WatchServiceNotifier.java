@@ -36,6 +36,7 @@ public final class WatchServiceNotifier implements Runnable, EventNotifier {
     }
 
     public void run() {
+        System.out.println("Watching for changes...");
         WatchKey key;
         this.eventObserver.add(new EventHandler());
         while (true) {

@@ -1,17 +1,13 @@
 package com.self.learn.watcher.filter;
 
-import com.google.common.collect.Queues;
-import com.self.learn.caching.base.CachingProxy;
-import com.self.learn.caching.base.CachingProxyImpl;
 import com.self.learn.state.Create;
 import com.self.learn.state.Modification;
-import com.self.learn.version.Line;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.self.learn.version.LineVersion;
 
 import java.io.*;
 import java.util.*;
 
-public class FileModHandler extends AbstractEventFilter implements EventFilter {
+public class FileModHandler extends AbstractEventHandler implements EventFilter {
 
 
     public FileModHandler() {
@@ -19,35 +15,38 @@ public class FileModHandler extends AbstractEventFilter implements EventFilter {
 
     @Override
     public void process(String fileName) {
-        ArrayDeque<Line> newVersion = new ArrayDeque<>();
+        ArrayDeque<LineVersion> newVersion = new ArrayDeque<>();
         try (LineNumberReader reader =
                      new LineNumberReader(
                              new InputStreamReader(new FileInputStream(fileName)))) {
-            Line lineObject;
+            LineVersion lineObject;
             String line;
             while ((line = reader.readLine()) != null) {
-                lineObject = new Line(line, reader.getLineNumber());
+                lineObject = new LineVersion(line.trim(), reader.getLineNumber());
                 newVersion.add(lineObject);
             }
 
-            ArrayDeque<Line> cachedVersion = (ArrayDeque<Line>) this.cachingProxy.getLastCachedContent(CACHE_NAME);
+            ArrayDeque<LineVersion> cachedVersion = (ArrayDeque<LineVersion>)
+                    this.cachingProxy.getLastCachedContent(generateCacheName());
             while (newVersion.size() > 0 && cachedVersion.size() > 0) {
-                Line first = newVersion.remove();
-                Line second = cachedVersion.remove();
+                LineVersion first = newVersion.remove();
+                LineVersion second = cachedVersion.remove();
                 Modification mod = first.diff(second);
                 System.out.println(mod);
+                System.out.println(mod.getContent());
             }
 
             if (newVersion.size() > 0) {
-                for (Line remain : newVersion) {
+                for (LineVersion remain : newVersion) {
                     Modification mod = new Create(remain.getLineNumer(), remain.getContent());
                     System.out.println(Arrays.deepToString(mod.getContent()));
                 }
             }
-            this.cachingProxy.updateCacheContent(CACHE_NAME, newVersion);
+            this.cachingProxy.updateCacheContent(generateCacheName(), newVersion);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 }

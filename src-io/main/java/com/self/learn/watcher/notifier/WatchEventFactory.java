@@ -1,7 +1,6 @@
 package com.self.learn.watcher.notifier;
 
 import com.self.learn.state.Modification;
-import com.self.learn.state.Create;
 
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;

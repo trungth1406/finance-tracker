@@ -5,9 +5,9 @@ import java.util.List;
 
 public class FileVersionContent implements VersionContent {
 
-    private List<Line> lines;
+    private List<LineVersion> lines;
 
-    public FileVersionContent(List<Line> lines) {
+    public FileVersionContent(List<LineVersion> lines) {
         this.lines = lines;
     }
 

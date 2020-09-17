@@ -1,18 +1,16 @@
 package com.self.learn.caching.base;
 
 import com.google.common.collect.Queues;
-import com.self.learn.version.Line;
-import com.self.learn.version.VersionContent;
+import com.self.learn.version.LineVersion;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
-public class CachingProxyImpl implements CachingProxy<Queue<Line>> {
+public class CachingProxyImpl implements CachingProxy<Queue<LineVersion>> {
 
 
     private static CachingProxyImpl INSTANCE = null;
@@ -30,35 +28,31 @@ public class CachingProxyImpl implements CachingProxy<Queue<Line>> {
     }
 
     private static CacheManagerBuilder<CacheManager> initCacheManager() {
+       //TODO: Add recovery configuration
         return CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("fileVersion",
                         CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, LinkedList.class,
                                 ResourcePoolsBuilder.heap(10).build()));
     }
 
-
-    public Cache<String, LinkedList> getFileVersionCache() {
-        return fileVersionCache;
-    }
-
-
     @Override
-    public void updateCacheContent(String cacheName, Queue<Line> lines) {
-        LinkedList<Queue<Line>> cachedQueue = this.fileVersionCache.get(cacheName);
+    public void updateCacheContent(String cacheName, Queue<LineVersion> lines) {
+        LinkedList<Queue<LineVersion>> cachedQueue = this.fileVersionCache.get(cacheName);
+        if(cachedQueue == null) throw new IllegalArgumentException("No such cache");
         cachedQueue.add(lines);
         this.fileVersionCache.put(cacheName, cachedQueue);
     }
 
     @Override
-    public void createNewCache(String cacheName, Queue<Line> lines) {
-        LinkedList<Queue<Line>> cachedQueue = new LinkedList<>();
+    public void createNewCache(String cacheName, Queue<LineVersion> lines) {
+        LinkedList<Queue<LineVersion>> cachedQueue = new LinkedList<>();
         cachedQueue.add(lines);
         this.fileVersionCache.put(cacheName, cachedQueue);
     }
 
     @Override
-    public Queue<Line> getLastCachedContent(String cacheName) {
-        List<Queue<Line>> cachedQueue = this.fileVersionCache.get(cacheName);
+    public Queue<LineVersion> getLastCachedContent(String cacheName) {
+        List<Queue<LineVersion>> cachedQueue = this.fileVersionCache.get(cacheName);
         if (Optional.ofNullable(cachedQueue).isPresent()) {
             return cachedQueue.get(0);
         }
