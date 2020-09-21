@@ -9,13 +9,5 @@ public class Update extends Modification {
         super(lineNumer, content);
     }
 
-    /**
-     *
-     */
-    protected Modification processContent() {
-        //TODO: Process String content. append;
-        return null;
-    }
-
 
 }

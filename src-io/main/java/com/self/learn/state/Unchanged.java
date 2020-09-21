@@ -5,10 +5,6 @@ public class Unchanged extends Modification {
         super(lineNumber, content);
     }
 
-    @Override
-    protected Modification processContent() {
-        return this;
-    }
 
 
 }

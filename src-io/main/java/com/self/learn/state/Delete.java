@@ -12,16 +12,14 @@ public class Delete extends Modification {
     /**
      *
      */
-    protected Modification processContent() {
-        return this;
-    }
+
 
 
     /**
      * @return
      */
     public String[] getContent() {
-        return new String[]{"","","",""};
+        return new String[]{"", "", "", ""};
     }
 
 }

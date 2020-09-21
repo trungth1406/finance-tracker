@@ -9,12 +9,4 @@ public class Create extends Modification {
         super(lineNumer, content);
     }
 
-    /**
-     *
-     */
-    protected Modification processContent() {
-        return this;
-    }
-
-
 }

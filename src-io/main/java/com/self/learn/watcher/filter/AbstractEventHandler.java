@@ -8,7 +8,6 @@ public abstract class AbstractEventHandler {
 
     protected CachingProxyImpl cachingProxy = CachingProxyImpl.getInstance();
     protected static final AtomicInteger integer = new AtomicInteger(0);
-
     protected static final String CACHE_NAME = "fileVersion";
 
     protected Integer nextVersion() {

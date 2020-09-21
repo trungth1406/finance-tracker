@@ -1,14 +1,13 @@
 package com.self.learn.watcher.filter;
 
+import com.self.learn.importer.impl.FileInputImporter;
 import com.self.learn.state.Create;
 import com.self.learn.state.Modification;
-import com.self.learn.version.LineVersion;
 
 import java.io.*;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 public class NewFileHandler extends AbstractEventHandler implements EventFilter {
 
@@ -18,20 +17,16 @@ public class NewFileHandler extends AbstractEventHandler implements EventFilter 
             throw new IllegalArgumentException("Accept text file only at this point");
         }
 
-        Queue<LineVersion> newVersion = new ArrayDeque<>();
+        Queue<Modification> newVersion = new ArrayDeque<>();
         try (LineNumberReader reader =
                      new LineNumberReader(
                              new InputStreamReader(new FileInputStream(fileName)))) {
-            LineVersion line;
+            Modification line;
             String newLine;
             while ((newLine = reader.readLine()) != null) {
-                line = new LineVersion(newLine.trim(), reader.getLineNumber());
+                if (newLine.isEmpty()) continue;
+                line = new Create(reader.getLineNumber(), newLine.trim()).processContent();
                 newVersion.add(line);
-            }
-
-            List<Modification> modificationList = new ArrayList<>();
-            for (LineVersion each : newVersion) {
-                modificationList.add(new Create(each.getLineNumer(), each.getContent()));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

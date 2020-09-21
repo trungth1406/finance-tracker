@@ -15,34 +15,37 @@ public class FileModHandler extends AbstractEventHandler implements EventFilter 
 
     @Override
     public void process(String fileName) {
-        ArrayDeque<LineVersion> newVersion = new ArrayDeque<>();
+
         try (LineNumberReader reader =
                      new LineNumberReader(
                              new InputStreamReader(new FileInputStream(fileName)))) {
-            LineVersion lineObject;
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lineObject = new LineVersion(line.trim(), reader.getLineNumber());
-                newVersion.add(lineObject);
+            ArrayDeque<Modification> newVersion = new ArrayDeque<>();
+            Modification line;
+            String newLine;
+            while ((newLine = reader.readLine()) != null) {
+                if (newLine.isEmpty()) continue;
+                line = new Create(reader.getLineNumber(), newLine.trim()).processContent();
+                newVersion.add(line);
             }
 
-            ArrayDeque<LineVersion> cachedVersion = (ArrayDeque<LineVersion>)
-                    this.cachingProxy.getLastCachedContent(generateCacheName());
+            Queue<Modification> cachedVersion = this.cachingProxy.getLastCachedContent(generateCacheName());
+            Modification first, second, mod;
             while (newVersion.size() > 0 && cachedVersion.size() > 0) {
-                LineVersion first = newVersion.remove();
-                LineVersion second = cachedVersion.remove();
-                Modification mod = first.diff(second);
+                first = newVersion.remove();
+                second = cachedVersion.remove();
+                mod = first.diff(second);
                 System.out.println(mod);
-                System.out.println(mod.getContent());
+                System.out.println(mod.getRange('A'));
+                System.out.println(Arrays.deepToString(mod.getContent()));
             }
 
-            if (newVersion.size() > 0) {
-                for (LineVersion remain : newVersion) {
-                    Modification mod = new Create(remain.getLineNumer(), remain.getContent());
-                    System.out.println(Arrays.deepToString(mod.getContent()));
-                }
-            }
-            this.cachingProxy.updateCacheContent(generateCacheName(), newVersion);
+//            if (newVersion.size() > 0) {
+//                for (Modification remain : newVersion) {
+//                   Modification mod = new Create(, remain.getContent());
+//                    System.out.println(Arrays.deepToString(mod.getContent()));
+//                }
+//            }
+            this.cachingProxy.updateCacheContent(String.format("%s_%s_v_%d", CACHE_NAME, fileName, this.nextVersion()), newVersion);
         } catch (IOException e) {
             e.printStackTrace();
         }

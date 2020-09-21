@@ -1,6 +1,7 @@
 package com.self.learn.caching.base;
 
 import com.google.common.collect.Queues;
+import com.self.learn.state.Modification;
 import com.self.learn.version.LineVersion;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
@@ -10,7 +11,7 @@ import org.ehcache.config.builders.ResourcePoolsBuilder;
 
 import java.util.*;
 
-public class CachingProxyImpl implements CachingProxy<Queue<LineVersion>> {
+public class CachingProxyImpl implements CachingProxy<Queue<Modification>> {
 
 
     private static CachingProxyImpl INSTANCE = null;
@@ -35,24 +36,26 @@ public class CachingProxyImpl implements CachingProxy<Queue<LineVersion>> {
                                 ResourcePoolsBuilder.heap(10).build()));
     }
 
+
     @Override
-    public void updateCacheContent(String cacheName, Queue<LineVersion> lines) {
-        LinkedList<Queue<LineVersion>> cachedQueue = this.fileVersionCache.get(cacheName);
+    public void updateCacheContent(String cacheName, Queue<Modification> lines) {
+        //TODO: Change rule when get and replace versions of Lines
+        LinkedList<Queue<Modification>> cachedQueue = this.fileVersionCache.get(cacheName);
         if(cachedQueue == null) throw new IllegalArgumentException("No such cache");
         cachedQueue.add(lines);
         this.fileVersionCache.put(cacheName, cachedQueue);
     }
 
     @Override
-    public void createNewCache(String cacheName, Queue<LineVersion> lines) {
-        LinkedList<Queue<LineVersion>> cachedQueue = new LinkedList<>();
+    public void createNewCache(String cacheName, Queue<Modification> lines) {
+        LinkedList<Queue<Modification>> cachedQueue = new LinkedList<>();
         cachedQueue.add(lines);
         this.fileVersionCache.put(cacheName, cachedQueue);
     }
 
     @Override
-    public Queue<LineVersion> getLastCachedContent(String cacheName) {
-        List<Queue<LineVersion>> cachedQueue = this.fileVersionCache.get(cacheName);
+    public Queue<Modification> getLastCachedContent(String cacheName) {
+        List<Queue<Modification>> cachedQueue = this.fileVersionCache.get(cacheName);
         if (Optional.ofNullable(cachedQueue).isPresent()) {
             return cachedQueue.get(0);
         }

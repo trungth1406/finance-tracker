@@ -26,7 +26,7 @@ public class LineVersion {
     }
 
 
-    public Modification diff(LineVersion that) {
+    public com.self.learn.state.Modification diff(LineVersion that) {
         this.content = purgeContent(this.content);
         that.content = purgeContent(that.content);
         int[][] countTable = longestSubSequenceTable(this.content, that.content);
@@ -36,7 +36,7 @@ public class LineVersion {
         return getModification(that.content,mod, that.lineNumber);
     }
 
-    private static Modification getModification(String original , String modified, int lineNumber) {
+    private static com.self.learn.state.Modification getModification(String original , String modified, int lineNumber) {
         if (modified.contains("+") && modified.contains("-")) {
             return new Update(lineNumber, original);
         } else if (modified.contains("+")) {
