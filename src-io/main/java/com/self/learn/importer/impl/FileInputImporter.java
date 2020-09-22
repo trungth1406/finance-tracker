@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.List;
 
 /**
- *
+ * TODO: Importer should be more flexible
  */
 public class FileInputImporter extends BaseImporter<Object> implements Importer<InputStream>, ContentObserver {
 
@@ -40,7 +40,7 @@ public class FileInputImporter extends BaseImporter<Object> implements Importer<
     }
 
     @Override
-    public void updateContent(Modification[] mods) {
-
+    public void updateContent(List<Modification> mods) {
+        //TODO: Handle modifications from File
     }
 }

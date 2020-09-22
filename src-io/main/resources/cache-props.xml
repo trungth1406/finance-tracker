@@ -1,0 +1,30 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd
+        http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd">
+
+    <diskStore path="C:/mycache" />
+
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="true"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="true"
+            maxElementsOnDisk="10000000"
+            diskPersistent="true"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU" />
+
+    <cache
+            name="test"
+            maxElementsInMemory="500"
+            eternal="true"
+            overflowToDisk="true"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600"
+            diskPersistent="true"
+            diskExpiryThreadIntervalSeconds="1"
+            memoryStoreEvictionPolicy="LFU" />
+
+</ehcache>

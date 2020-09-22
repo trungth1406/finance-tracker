@@ -1,24 +1,33 @@
 package com.self.learn.watcher.filter;
 
+import com.self.learn.importer.ContentObserver;
 import com.self.learn.state.Create;
 import com.self.learn.state.Modification;
-import com.self.learn.version.LineVersion;
+import com.self.learn.watcher.base.Watcher;
 
 import java.io.*;
 import java.util.*;
 
-public class FileModHandler extends AbstractEventHandler implements EventFilter {
+public class FileModHandler extends AbstractEventHandler implements EventHandle, Watcher {
 
 
-    public FileModHandler() {
+    private Watcher watcher;
+    private List<ContentObserver> observers;
+    private List<Modification> modifications = new ArrayList<>();
+
+    public FileModHandler(Watcher watcher) {
+        this.watcher = watcher;
     }
 
     @Override
     public void process(String fileName) {
-
+        Queue<Modification> cachedVersion =
+                this.cachingProxy.getLastCachedContent(getCacheName(fileName));
+        File modified = new File(fileName);
+        if (modified.isDirectory()) return;
         try (LineNumberReader reader =
                      new LineNumberReader(
-                             new InputStreamReader(new FileInputStream(fileName)))) {
+                             new InputStreamReader(new FileInputStream(modified)))) {
             ArrayDeque<Modification> newVersion = new ArrayDeque<>();
             Modification line;
             String newLine;
@@ -28,28 +37,41 @@ public class FileModHandler extends AbstractEventHandler implements EventFilter 
                 newVersion.add(line);
             }
 
-            Queue<Modification> cachedVersion = this.cachingProxy.getLastCachedContent(generateCacheName());
+            this.cachingProxy.updateCacheContent(this.getCacheName(fileName), newVersion);
+
             Modification first, second, mod;
+            //TODO: Add logic for getting changes from newversion and cachedVersion
             while (newVersion.size() > 0 && cachedVersion.size() > 0) {
                 first = newVersion.remove();
                 second = cachedVersion.remove();
                 mod = first.diff(second);
-                System.out.println(mod);
-                System.out.println(mod.getRange('A'));
-                System.out.println(Arrays.deepToString(mod.getContent()));
+                this.modifications.add(mod);
             }
 
-//            if (newVersion.size() > 0) {
-//                for (Modification remain : newVersion) {
-//                   Modification mod = new Create(, remain.getContent());
-//                    System.out.println(Arrays.deepToString(mod.getContent()));
-//                }
-//            }
-            this.cachingProxy.updateCacheContent(String.format("%s_%s_v_%d", CACHE_NAME, fileName, this.nextVersion()), newVersion);
+            if (newVersion.size() > 0) {
+                for (Modification remain : newVersion) {
+                    this.modifications.add(remain);
+                }
+            }
+            this.notifyObserver();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
+    @Override
+    public void notifyObserver() {
+        observers.stream().forEach(contentObserver -> contentObserver.updateContent(this.modifications));
+    }
+
+    @Override
+    public void addObserver() {
+
+    }
+
+    @Override
+    public void removeObserver() {
+
+    }
 }

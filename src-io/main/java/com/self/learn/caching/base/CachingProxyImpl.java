@@ -5,10 +5,14 @@ import com.self.learn.state.Modification;
 import com.self.learn.version.LineVersion;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
+import org.ehcache.config.Configuration;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
+import org.ehcache.xml.XmlConfiguration;
+import org.springframework.cache.config.CacheManagementConfigUtils;
 
+import java.net.URL;
 import java.util.*;
 
 public class CachingProxyImpl implements CachingProxy<Queue<Modification>> {
@@ -36,12 +40,22 @@ public class CachingProxyImpl implements CachingProxy<Queue<Modification>> {
                                 ResourcePoolsBuilder.heap(10).build()));
     }
 
+//    private static CacheManager initCacheManager() {
+//        //TODO: Add recovery configuration
+//        final URL myUrl = CachingProxyImpl.class.getResource("cache-props.xml");
+//        XmlConfiguration xmlConfig = new XmlConfiguration(myUrl);
+//        return CacheManagerBuilder.newCacheManager(new XmlConfiguration(myUrl));
+////                .withCache("fileVersion",
+////                        CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, LinkedList.class,
+////                                ResourcePoolsBuilder.heap(10).build()));
+//    }
+
 
     @Override
     public void updateCacheContent(String cacheName, Queue<Modification> lines) {
         //TODO: Change rule when get and replace versions of Lines
         LinkedList<Queue<Modification>> cachedQueue = this.fileVersionCache.get(cacheName);
-        if(cachedQueue == null) throw new IllegalArgumentException("No such cache");
+        if (cachedQueue == null) throw new IllegalArgumentException("No such cache");
         cachedQueue.add(lines);
         this.fileVersionCache.put(cacheName, cachedQueue);
     }

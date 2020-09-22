@@ -8,7 +8,7 @@ import java.nio.file.WatchEvent;
 
 public class EventHandler implements EventObserver {
 
-    private EventFilter filter;
+    private EventHandle filter;
 
     public EventHandler() {
     }
@@ -18,7 +18,7 @@ public class EventHandler implements EventObserver {
         if (isOfType(StandardWatchEventKinds.ENTRY_CREATE, watchEvent)) {
             this.filter = new NewFileHandler();
         } else if (isOfType(StandardWatchEventKinds.ENTRY_MODIFY, watchEvent)) {
-            this.filter = new FileModHandler();
+            this.filter = new FileModHandler(watcher);
         }else{
             return;
         }

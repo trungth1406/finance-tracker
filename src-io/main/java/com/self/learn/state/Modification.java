@@ -3,7 +3,7 @@ package com.self.learn.state;
 /**
  *
  */
-public abstract class Modification {
+public  class Modification {
 
 
     public Modification(int lineNumber, String content) {
@@ -77,7 +77,6 @@ public abstract class Modification {
         StringBuilder sb = new StringBuilder();
         for (String elem : diff.split(" ")) {
             if (elem.contains("+") || !elem.contains("-")) sb.append(elem);
-            sb.append(" ");
         }
         this.content = sb.reverse().toString();
         this.lineNumer = lineNumber;

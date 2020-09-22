@@ -1,6 +1,6 @@
 package com.self.learn.watcher.filter;
 
-public interface EventFilter {
+public interface EventHandle {
 
 
     void process(String fileName);
