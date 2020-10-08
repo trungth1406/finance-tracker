@@ -17,7 +17,9 @@ public interface SheetService {
 
     void append(List<List<Object>> values, String spreadSheetId, String sheetId) throws IOException;
 
-    void create(List<List<Object>> values, String spreadSheetId, String sheetId, String range) throws IOException;
+    void append(List<List<Object>> values, String spreadSheetId, String sheetId, String range) throws IOException;
+
+    void appendRanges(List<List<Object>> values, String spreadSheetId, String sheetId, String range) throws IOException;
 
     void delete(String spreadSheetId, String sheetId, String range);
 

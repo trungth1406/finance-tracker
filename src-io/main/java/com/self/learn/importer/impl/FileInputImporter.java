@@ -15,9 +15,9 @@ import java.util.List;
 /**
  * TODO: Importer should be more flexible
  */
-public class FileInputImporter extends BaseImporter<Object> implements Importer<InputStream>, ContentObserver {
+public class FileInputImporter extends BaseImporter<Object> implements Importer<InputStream> {
 
-    private FileType fromType;
+    private FileType<List<TransactionDTO>> fromType;
     private Exporter toType;
 
     public FileInputImporter(Type fromType, Exporter toType) {
@@ -33,14 +33,5 @@ public class FileInputImporter extends BaseImporter<Object> implements Importer<
         toType.export(transformed);
     }
 
-    @Override
-    public void updateContent(InputStream in) {
-        List<TransactionDTO> transformed = fromType.transform(in);
-        toType.export(transformed);
-    }
 
-    @Override
-    public void updateContent(List<Modification> mods) {
-        //TODO: Handle modifications from File
-    }
 }

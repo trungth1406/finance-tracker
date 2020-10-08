@@ -30,20 +30,20 @@ public class GoogleSheetExporter implements Exporter<List<TransactionDTO>> {
     }
 
     @Override
-    public void export(List<TransactionDTO> inputStream) {
-        List<List<Object>> rangeValues = convertToValueRanges(inputStream);
+    public void export(List<TransactionDTO> transaction) {
+        List<List<Object>> rangeValues = convertToValueRanges(transaction);
         exportToGoogleSheet(rangeValues);
     }
 
-    private static List<List<Object>> convertToValueRanges(List<TransactionDTO> is) {
+    private static List<List<Object>> convertToValueRanges(List<TransactionDTO> transaction) {
         List<List<Object>> rangeValues = new ArrayList<>();
         List<Object> rowValues;
         boolean containsDate = true;
-        for (int i = 0; i < is.size(); i++) {
-            for (Map.Entry entry : is.get(i).getProps().entrySet()) {
+        for (int i = 0; i < transaction.size(); i++) {
+            for (Map.Entry entry : transaction.get(i).getProps().entrySet()) {
                 rowValues = new ArrayList<>();
                 if (containsDate) {
-                    rowValues.add(formatDate(is.get(i).getPerformedDate()));
+                    rowValues.add(formatDate(transaction.get(i).getPerformedDate()));
                     containsDate = false;
                 } else {
                     rowValues.add("");

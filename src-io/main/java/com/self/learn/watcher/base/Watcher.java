@@ -1,5 +1,7 @@
 package com.self.learn.watcher.base;
 
+import com.self.learn.importer.ContentObserver;
+
 import java.util.*;
 
 /**
@@ -16,11 +18,11 @@ public interface Watcher {
     /**
      * 
      */
-    public void addObserver();
+    public void addObserver(ContentObserver observer);
 
     /**
      * 
      */
-    public void removeObserver();
+    public void removeObserver(ContentObserver observer);
 
 }

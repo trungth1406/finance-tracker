@@ -6,17 +6,22 @@ import com.self.learn.state.Modification;
 import com.self.learn.watcher.base.Watcher;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 public class FileModHandler extends AbstractEventHandler implements EventHandle, Watcher {
 
 
-    private Watcher watcher;
-    private List<ContentObserver> observers;
-    private List<Modification> modifications = new ArrayList<>();
+    private final List<Modification> modifications = new ArrayList<>();
 
-    public FileModHandler(Watcher watcher) {
-        this.watcher = watcher;
+    private FileModHandler(List<ContentObserver> observers) {
+        this.observers = observers;
+    }
+
+    public static FileModHandler with(List<ContentObserver> observers) {
+        return new FileModHandler(observers);
     }
 
     @Override
@@ -25,9 +30,8 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
                 this.cachingProxy.getLastCachedContent(getCacheName(fileName));
         File modified = new File(fileName);
         if (modified.isDirectory()) return;
-        try (LineNumberReader reader =
-                     new LineNumberReader(
-                             new InputStreamReader(new FileInputStream(modified)))) {
+        try (LineNumberReader reader = new LineNumberReader(
+                new InputStreamReader(new FileInputStream(modified)))) {
             ArrayDeque<Modification> newVersion = new ArrayDeque<>();
             Modification line;
             String newLine;
@@ -40,7 +44,7 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
             this.cachingProxy.updateCacheContent(this.getCacheName(fileName), newVersion);
 
             Modification first, second, mod;
-            //TODO: Add logic for getting changes from newversion and cachedVersion
+            //TODO: Add logic for getting changes from new version and cachedVersion
             while (newVersion.size() > 0 && cachedVersion.size() > 0) {
                 first = newVersion.remove();
                 second = cachedVersion.remove();
@@ -59,19 +63,19 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
         }
     }
 
-
+    // STOPSHIP: 10/5/20 Test update service
     @Override
     public void notifyObserver() {
         observers.stream().forEach(contentObserver -> contentObserver.updateContent(this.modifications));
     }
 
     @Override
-    public void addObserver() {
-
+    public void addObserver(ContentObserver observer) {
+        this.observers.add(observer);
     }
 
     @Override
-    public void removeObserver() {
-
+    public void removeObserver(ContentObserver observer) {
+        this.observers.remove(observer);
     }
 }

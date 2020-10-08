@@ -1,23 +1,22 @@
 package com.self.learn.importer;
 
-import com.self.learn.state.Modification;
-
 import java.io.InputStream;
-import java.util.List;
 
 /**
- * 
+ *
  */
-public interface ContentObserver {
+public interface ContentObserver<T> {
 
     /**
      * @param in
      */
-    public void updateContent(InputStream in);
+    void updateContent(InputStream in);
 
     /**
      * @param mods
      */
-    public void updateContent(List<Modification> mods);
+    void updateContent(T mods);
+
+    void updateContent(T mods, String range);
 
 }

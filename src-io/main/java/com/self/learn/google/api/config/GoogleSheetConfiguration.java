@@ -59,7 +59,7 @@ public final class GoogleSheetConfiguration {
 
 
     private static Credential authorize() throws IOException, GeneralSecurityException {
-        InputStream in = SheetService.class.getClassLoader().getResourceAsStream(properties.getProperty("file.path"));
+        InputStream in = GoogleSheetConfiguration.class.getClassLoader().getResourceAsStream(properties.getProperty("file.path"));
         GoogleClientSecrets secrets =
                 GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), new InputStreamReader(in));
         List<String> scopes = Arrays.asList(SheetsScopes.SPREADSHEETS);

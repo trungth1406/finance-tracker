@@ -1,23 +1,26 @@
 package com.self.learn.watcher.filter;
 
+import com.self.learn.google.api.service.BaseSheetService;
+import com.self.learn.importer.GoogleSheetObserver;
 import com.self.learn.state.Modification;
 
 import java.io.*;
 import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewFileHandler extends AbstractEventHandler implements EventHandle {
 
 
+    public NewFileHandler() {
+        this.observers.add(new GoogleSheetObserver(new BaseSheetService()));
+    }
 
     @Override
     public void process(String fileName) {
-        if (!fileName.endsWith(".txt")) {
-            throw new IllegalArgumentException("Accept text file only at this point");
-        }
         File modified = new File(fileName);
-        if(modified.isDirectory()) return;
-        Queue<Modification> newVersion = new ArrayDeque<>();
+        if (modified.isDirectory()) return;
+        List<Modification> newVersion = new ArrayList<>();
         try (LineNumberReader reader =
                      new LineNumberReader(
                              new InputStreamReader(new FileInputStream(modified)))) {
@@ -28,11 +31,11 @@ public class NewFileHandler extends AbstractEventHandler implements EventHandle 
                 line = new Modification(reader.getLineNumber(), newLine.trim()).processContent();
                 newVersion.add(line);
             }
-
+            this.observers.stream().forEach(observer -> observer.updateContent(newVersion));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            this.cachingProxy.createNewCache(this.getCacheName(fileName), newVersion);
+            this.cachingProxy.createNewCache(this.getCacheName(fileName), new ArrayDeque<>(newVersion));
         }
     }
 }

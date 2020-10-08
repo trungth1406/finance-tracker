@@ -5,12 +5,12 @@ import com.self.learn.dto.TransactionDTO;
 import java.io.InputStream;
 import java.util.List;
 
-public interface FileType {
+public interface FileType<T> {
 
 
     String getType();
 
-    List<TransactionDTO> transform(InputStream stream);
+   T transform(InputStream stream);
 
 
 }
