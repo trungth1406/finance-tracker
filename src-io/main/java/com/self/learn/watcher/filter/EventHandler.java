@@ -20,6 +20,7 @@ public class EventHandler implements EventObserver {
         return entry.name().equals(watchEvent.kind().name());
     }
 
+    // STOPSHIP: 10/8/20 Handle modification with its corresponding service 
     @Override
     public synchronized void processWith(WatchEvent watchEvent) {
         if (isOfType(StandardWatchEventKinds.ENTRY_CREATE, watchEvent)) {

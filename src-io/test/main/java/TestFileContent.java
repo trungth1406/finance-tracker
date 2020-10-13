@@ -1,7 +1,10 @@
 import com.self.learn.state.Modification;
 import com.self.learn.state.Create;
+import com.self.learn.state.Update;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 public class TestFileContent {
 
@@ -13,5 +16,11 @@ public class TestFileContent {
 
         Modification mod2 = new Create(50, "- as 50");
         Assert.assertArrayEquals(mod2.getContent(), new java.lang.String[]{"", "- as ", "", "50"});
+    }
+
+    @Test
+    public void testModification(){
+        Modification mod = new Update(10," +a -b +d -2 0 +2");
+        Assert.assertEquals(mod.getContent(), new String[]{"","ad","","02"});
     }
 }

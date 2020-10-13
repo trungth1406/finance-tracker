@@ -9,4 +9,9 @@ public class Create extends Modification {
         super(lineNumer, content);
     }
 
+    @Override
+    public String[] getContent() {
+        this.content = this.content.replace("+"," ");
+        return super.getContent();
+    }
 }

@@ -2,6 +2,7 @@ package com.self.learn.importer;
 
 import com.self.learn.google.api.service.SheetService;
 import com.self.learn.state.Modification;
+import com.self.learn.state.Unchanged;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,9 +29,9 @@ public class GoogleSheetObserver implements ContentObserver<List<Modification>> 
         List<List<Object>> sheetList = new ArrayList<>();
         try {
             for (Modification mod : mods) {
-                sheetList.add(Arrays.asList(mod.getContent()));
+                if(!(mod instanceof Unchanged))
+                    sheetList.add(Arrays.asList(mod.getContent()));
             }
-
             sheetService.append(sheetList, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk",
                     String.format("Tháng %d", LocalDate.now().getMonthValue()));
         } catch (IOException e) {

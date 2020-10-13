@@ -26,8 +26,7 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
 
     @Override
     public void process(String fileName) {
-        Queue<Modification> cachedVersion =
-                this.cachingProxy.getLastCachedContent(getCacheName(fileName));
+        Queue<Modification> cachedVersion = this.cachingProxy.getLastCachedContent(this.getCacheName(fileName));
         File modified = new File(fileName);
         if (modified.isDirectory()) return;
         try (LineNumberReader reader = new LineNumberReader(
@@ -37,11 +36,9 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
             String newLine;
             while ((newLine = reader.readLine()) != null) {
                 if (newLine.isEmpty()) continue;
-                line = new Create(reader.getLineNumber(), newLine.trim()).processContent();
+                line = new Modification(reader.getLineNumber(), newLine.trim()).processContent();
                 newVersion.add(line);
             }
-
-            this.cachingProxy.updateCacheContent(this.getCacheName(fileName), newVersion);
 
             Modification first, second, mod;
             //TODO: Add logic for getting changes from new version and cachedVersion
@@ -58,6 +55,7 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
                 }
             }
             this.notifyObserver();
+            this.cachingProxy.updateCacheContent(this.getCacheName(fileName), newVersion);
         } catch (IOException e) {
             e.printStackTrace();
         }
