@@ -2,12 +2,11 @@ package com.self.learn.state;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
 
 /**
  *
  */
-public class Update extends Modification {
+public class Update extends ModificationState {
 
     public Update(int lineNumer, String content) {
         super(lineNumer, content);

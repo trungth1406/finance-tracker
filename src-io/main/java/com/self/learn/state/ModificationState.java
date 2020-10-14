@@ -3,12 +3,12 @@ package com.self.learn.state;
 /**
  *
  */
-public class Modification {
+public abstract class ModificationState {
 
 
     protected int lineNumer;
     protected String content;
-    public Modification(int lineNumber, String content) {
+    public ModificationState(int lineNumber, String content) {
         this.lineNumer = lineNumber;
         this.content = content;
     }
@@ -17,7 +17,7 @@ public class Modification {
         return content.contains("/") && Character.isDigit(content.charAt(0));
     }
 
-    private static Modification getModification(String original, String modified, int lineNumber) {
+    private static ModificationState getModification(String original, String modified, int lineNumber) {
         if (modified.contains("+") && modified.contains("-")) {
             return new Update(lineNumber, original);
         } else if (modified.contains("+")) {
@@ -62,7 +62,7 @@ public class Modification {
         return counts;
     }
 
-    public Modification processContent() {
+    public ModificationState processContent() {
         this.content = this.content
                 .replace("-", "")
                 .trim();
@@ -105,14 +105,14 @@ public class Modification {
         return contentArr;
     }
 
-    public Modification diff(Modification that) {
+    public ModificationState diff(ModificationState that) {
         int[][] countTable = longestSubSequenceTable(this.content, that.content);
         StringBuilder sb = new StringBuilder();
         String diff = genDiff(sb, countTable, this.content, that.content, this.content.length(), that.content.length());
         return formNewContent(diff, that.lineNumer);
     }
 
-    protected Modification formNewContent(String diff, int lineNumber) {
+    protected ModificationState formNewContent(String diff, int lineNumber) {
         StringBuilder sb = new StringBuilder();
         for (String elem : diff.split(" ")) {
             sb.append(elem);

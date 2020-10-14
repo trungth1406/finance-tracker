@@ -1,6 +1,6 @@
 package com.self.learn.watcher.notifier;
 
-import com.self.learn.state.Modification;
+import com.self.learn.state.ModificationState;
 
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
@@ -18,11 +18,11 @@ public class WatchEventFactory {
     }
 
 
-    public Modification getType(int lineNumber, String content) {
+    public ModificationState getType(int lineNumber, String content) {
         return getEventType(lineNumber, content, null);
     }
 
-    private Modification getEventType(int lineNumber, String content, StandardWatchEventKinds kind) {
+    private ModificationState getEventType(int lineNumber, String content, StandardWatchEventKinds kind) {
         return null;
     }
 }

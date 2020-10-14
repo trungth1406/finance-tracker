@@ -2,58 +2,56 @@ package com.self.learn.watcher.filter;
 
 import com.self.learn.importer.ContentObserver;
 import com.self.learn.state.Create;
-import com.self.learn.state.Modification;
+import com.self.learn.state.Line;
+import com.self.learn.state.ModificationState;
 import com.self.learn.watcher.base.Watcher;
 
 import java.io.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class FileModHandler extends AbstractEventHandler implements EventHandle, Watcher {
 
 
-    private final List<Modification> modifications = new ArrayList<>();
+    private final List<ModificationState> modificationStates = new ArrayList<>();
 
     private FileModHandler(List<ContentObserver> observers) {
         this.observers = observers;
     }
 
-    public static FileModHandler with(List<ContentObserver> observers) {
-        return new FileModHandler(observers);
+    public static FileModHandler with(ContentObserver... observers) {
+        return new FileModHandler(Arrays.asList(observers));
     }
 
     @Override
     public void process(String fileName) {
-        Queue<Modification> cachedVersion = this.cachingProxy.getLastCachedContent(this.getCacheName(fileName));
+        Queue<Line> cachedVersion = this.cachingProxy.getLastCachedContent(this.getCacheName(fileName));
         File modified = new File(fileName);
-        if (modified.isDirectory()) return;
+        if (modified.isDirectory())
+            return;
         try (LineNumberReader reader = new LineNumberReader(
                 new InputStreamReader(new FileInputStream(modified)))) {
-            ArrayDeque<Modification> newVersion = new ArrayDeque<>();
-            Modification line;
+            ArrayDeque<Line> newVersion = new ArrayDeque<>();
+            Line line;
             String newLine;
             while ((newLine = reader.readLine()) != null) {
-                if (newLine.isEmpty()) continue;
-                line = new Modification(reader.getLineNumber(), newLine.trim()).processContent();
+                line = new Line(reader.getLineNumber(), newLine.trim());
                 newVersion.add(line);
             }
 
-            Modification first, second, mod;
+            Line first, second;
+            ModificationState mod;
             //TODO: Add logic for getting changes from new version and cachedVersion
             while (newVersion.size() > 0 && cachedVersion.size() > 0) {
                 first = newVersion.remove();
                 second = cachedVersion.remove();
-                mod = first.diff(second);
-                this.modifications.add(mod);
+                mod = first.getModificationState().diff(second.getModificationState());
+                this.modificationStates.add(mod);
             }
 
-            if (newVersion.size() > 0) {
-                for (Modification remain : newVersion) {
-                    this.modifications.add(remain);
-                }
-            }
+            newVersion.stream().forEach(remainLine -> {
+                remainLine.changeState(new Create(remainLine.getLineNumber(), remainLine.getContent()));
+            });
+
             this.notifyObserver();
             this.cachingProxy.updateCacheContent(this.getCacheName(fileName), newVersion);
         } catch (IOException e) {
@@ -64,7 +62,7 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
     // STOPSHIP: 10/5/20 Test update service
     @Override
     public void notifyObserver() {
-        observers.stream().forEach(contentObserver -> contentObserver.updateContent(this.modifications));
+        observers.stream().forEach(contentObserver -> contentObserver.updateContent(this.modificationStates));
     }
 
     @Override

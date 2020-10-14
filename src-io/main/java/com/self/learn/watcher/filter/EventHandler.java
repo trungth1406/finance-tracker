@@ -26,7 +26,7 @@ public class EventHandler implements EventObserver {
         if (isOfType(StandardWatchEventKinds.ENTRY_CREATE, watchEvent)) {
             this.filter = new NewFileHandler();
         } else if (isOfType(StandardWatchEventKinds.ENTRY_MODIFY, watchEvent)) {
-            this.filter = FileModHandler.with(Collections.singletonList(new GoogleSheetObserver(new BaseSheetService())));
+            this.filter = FileModHandler.with((new GoogleSheetObserver(new BaseSheetService())));
         } else {
             return;
         }

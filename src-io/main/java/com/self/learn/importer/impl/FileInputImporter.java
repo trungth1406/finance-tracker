@@ -1,7 +1,5 @@
 package com.self.learn.importer.impl;
 
-import com.self.learn.state.Modification;
-import com.self.learn.importer.ContentObserver;
 import com.self.learn.dto.TransactionDTO;
 import com.self.learn.importer.type.FileType;
 import com.self.learn.importer.type.Type;

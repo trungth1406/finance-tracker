@@ -1,6 +1,8 @@
 package com.self.learn.google.api.service;
 
 import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
+import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 import com.self.learn.google.api.config.GoogleSheetConfiguration;
 
 import java.io.IOException;
@@ -11,6 +13,16 @@ public interface SheetService {
 
     static Sheets getSheetService() {
         return GoogleSheetConfiguration.getInstance("google-sheet.properties").getSheetService();
+    }
+
+    static String newSpreadsheet(String title) throws IOException {
+        Spreadsheet spreadsheet = new Spreadsheet()
+                .setProperties(new SpreadsheetProperties()
+                        .setTitle(title));
+        spreadsheet = getSheetService().spreadsheets().create(spreadsheet)
+                .setFields("spreadsheetId")
+                .execute();
+        return spreadsheet.getSpreadsheetId();
     }
 
     List<List<Object>> read(String spreadSheetId, String sheetId, String range) throws IOException;

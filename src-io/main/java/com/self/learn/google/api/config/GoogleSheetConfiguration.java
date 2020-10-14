@@ -44,7 +44,6 @@ public final class GoogleSheetConfiguration {
 
 
     public static Sheets getSheetService() {
-
         try {
             Credential credential = authorize();
             return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(),

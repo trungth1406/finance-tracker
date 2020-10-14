@@ -3,7 +3,7 @@ package com.self.learn.state;
 /**
  *
  */
-public class Delete extends Modification {
+public class Delete extends ModificationState {
 
     public Delete(int lineNumer, String content) {
         super(lineNumer, content);
