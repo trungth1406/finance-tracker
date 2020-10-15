@@ -8,6 +8,7 @@ public abstract class ModificationState {
 
     protected int lineNumer;
     protected String content;
+
     public ModificationState(int lineNumber, String content) {
         this.lineNumer = lineNumber;
         this.content = content;
@@ -96,11 +97,17 @@ public abstract class ModificationState {
             }
         } else {
             int lastNotNumer = 0;
-            while (!Character.isDigit(this.content.charAt(lastNotNumer++))) ;
-            contentArr[0] = "";
-            contentArr[1] = content.substring(0, lastNotNumer - 1);
-            contentArr[2] = "";
-            contentArr[3] = content.substring(lastNotNumer - 1);
+            if (this.content.isEmpty()) {
+                for (int i = 0; i < 4; i++) {
+                    contentArr[i] = "";
+                }
+            }else{
+                while (!Character.isDigit(this.content.charAt(lastNotNumer++))) ;
+                contentArr[0] = "";
+                contentArr[1] = content.substring(0, lastNotNumer - 1);
+                contentArr[2] = "";
+                contentArr[3] = content.substring(lastNotNumer - 1);
+            }
         }
         return contentArr;
     }
@@ -119,9 +126,9 @@ public abstract class ModificationState {
         }
         String newContent = sb.reverse().toString();
         if (newContent.contains("+") && newContent.contains("-")) {
-            return  new Update(lineNumber,newContent);
+            return new Update(lineNumber, newContent);
         } else if (newContent.contains("-")) {
-            return new Delete(lineNumber,newContent);
+            return new Delete(lineNumber, newContent);
         } else {
             return new Create(lineNumber, newContent);
         }

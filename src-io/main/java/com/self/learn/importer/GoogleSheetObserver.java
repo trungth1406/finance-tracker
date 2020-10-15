@@ -31,7 +31,7 @@ public final class GoogleSheetObserver implements ContentObserver<List<Line>> {
     private static List<List<Object>> generateNewContentFrom(List<Line> lines) {
         List<List<Object>> sheetList = new ArrayList<>();
         for (Line line : lines) {
-                sheetList.add(Arrays.asList(line.getModificationState().getContent()));
+            sheetList.add(Arrays.asList(line.getModificationState().getContent()));
         }
         return sheetList;
     }
@@ -42,9 +42,9 @@ public final class GoogleSheetObserver implements ContentObserver<List<Line>> {
         List<List<Object>> sheetList = generateNewContentFrom(lines);
         try {
             String name = String.format("Tháng %d - %s", LocalDate.now().getMonthValue(), UUID.randomUUID().toString());
-            String title = SheetService.newSpreadsheet(name);
-            sheetService.append(sheetList, System.getProperty("sheet.id"),
-                    String.format("Tháng %d", LocalDate.now().getMonthValue()), title);
+            SheetService.newSpreadsheet(name);
+            sheetService.append(sheetList, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk",
+                   name);
         } catch (IOException e) {
             e.printStackTrace();
         }
