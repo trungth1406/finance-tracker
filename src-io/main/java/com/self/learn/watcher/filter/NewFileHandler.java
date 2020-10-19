@@ -30,7 +30,7 @@ public class NewFileHandler extends AbstractEventHandler implements EventHandle 
                 line = new Line(reader.getLineNumber(), newLine.trim());
                 newVersion.add(line);
             }
-            this.observers.stream().forEach(observer -> observer.create(newVersion));
+            this.observers.stream().forEach(observer -> observer.create(newVersion,fileName));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

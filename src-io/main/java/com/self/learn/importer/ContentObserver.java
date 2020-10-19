@@ -8,10 +8,9 @@ import java.io.InputStream;
 public interface ContentObserver<T> {
 
 
-    void create(T lines);
+    void create(T lines, String sheetId);
 
-    void updateContent(T mods);
 
-    void updateContent(T mods, String range);
+    void updateContent(T mods, String sheetId);
 
 }

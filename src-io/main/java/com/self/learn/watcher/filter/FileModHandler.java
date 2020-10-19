@@ -11,9 +11,6 @@ import java.util.*;
 
 public class FileModHandler extends AbstractEventHandler implements EventHandle, Watcher {
 
-
-    private final List<ModificationState> modificationStates = new ArrayList<>();
-
     private FileModHandler(List<ContentObserver> observers) {
         this.observers = observers;
     }
@@ -40,19 +37,17 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
 
             Line first, second;
             ModificationState mod;
-            //TODO: Add logic for getting changes from new version and cachedVersion
             while (newVersion.size() > 0 && cachedVersion.size() > 0) {
                 first = newVersion.remove();
                 second = cachedVersion.remove();
                 mod = first.getModificationState().diff(second.getModificationState());
-                this.modificationStates.add(mod);
+                first.changeState(mod);
             }
 
-            newVersion.stream().forEach(remainLine -> {
-                remainLine.changeState(new Create(remainLine.getLineNumber(), remainLine.getContent()));
-            });
+            newVersion.forEach(remainLine ->
+                    remainLine.changeState(new Create(remainLine.getLineNumber(), remainLine.getContent())));
 
-            this.notifyObserver();
+            observers.forEach(contentObserver -> contentObserver.updateContent(new ArrayList<>(newVersion),fileName));
             this.cachingProxy.updateCacheContent(this.getCacheName(fileName), newVersion);
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,7 +57,7 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
     // STOPSHIP: 10/5/20 Test update service
     @Override
     public void notifyObserver() {
-        observers.stream().forEach(contentObserver -> contentObserver.updateContent(this.modificationStates));
+
     }
 
     @Override

@@ -38,12 +38,12 @@ public class BaseSheetService implements SheetService {
 
     // STOPSHIP: 10/7/20 Check for document of appending sheet ID
     @Override
-    public void append(List<List<Object>> values, String spreadSheetId, String sheetId, String range) throws IOException {
+    public void update(List<List<Object>> values, String spreadSheetId, String sheetId, String range) throws IOException {
         String formatted = String.format("%s!%s", sheetId, range);
-        ValueRange body = new ValueRange().setRange(formatted).setValues(values);
+        ValueRange body = new ValueRange().setValues(values);
         sheetService.spreadsheets().values().
-                update(spreadSheetId, sheetId, body).
-                setValueInputOption("USER_ENTERED").
+                update(spreadSheetId, formatted, body).
+                setValueInputOption("RAW").
                 setIncludeValuesInResponse(true).
                 execute();
     }

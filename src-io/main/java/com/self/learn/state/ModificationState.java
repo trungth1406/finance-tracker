@@ -77,10 +77,8 @@ public abstract class ModificationState {
     public String getRange(char fromCol) {
         String[] contentArray = getContent();
         int length = contentArray.length;
-        int charToInteger = fromCol;
-        int nextPos = charToInteger + length - 1;
-        char nextCol = (char) (nextPos);
-        return String.format("%s%d:%s%d", fromCol, this.lineNumer, nextCol, this.lineNumer + length);
+        char nextCol = (char) ((int) fromCol + length - 1);
+        return String.format("%s%d:%s%d", fromCol, this.lineNumer, nextCol, this.lineNumer);
     }
 
     /**
@@ -101,7 +99,7 @@ public abstract class ModificationState {
                 for (int i = 0; i < 4; i++) {
                     contentArr[i] = "";
                 }
-            }else{
+            } else {
                 while (!Character.isDigit(this.content.charAt(lastNotNumer++))) ;
                 contentArr[0] = "";
                 contentArr[1] = content.substring(0, lastNotNumer - 1);
@@ -129,8 +127,10 @@ public abstract class ModificationState {
             return new Update(lineNumber, newContent);
         } else if (newContent.contains("-")) {
             return new Delete(lineNumber, newContent);
-        } else {
+        } else if (newContent.contains("+")) {
             return new Create(lineNumber, newContent);
+        } else {
+            return new Unchanged(lineNumber, newContent);
         }
     }
 

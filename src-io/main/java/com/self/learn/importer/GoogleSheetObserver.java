@@ -38,46 +38,32 @@ public final class GoogleSheetObserver implements ContentObserver<List<Line>> {
 
     // STOPSHIP: 10/14/20 Find a way to add new sheet to existing sheet
     @Override
-    public void create(List<Line> lines) {
+    public void create(List<Line> lines,String sheetId) {
         List<List<Object>> sheetList = generateNewContentFrom(lines);
         try {
-            String name = String.format("Tháng %d - %s", LocalDate.now().getMonthValue(), UUID.randomUUID().toString());
+            String name = String.format("Tháng %d - %s", LocalDate.now().getMonthValue(),sheetId);
             SheetService.newSpreadsheet(name);
             sheetService.append(sheetList, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk",
-                   name);
+                    name);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // STOPSHIP: 10/19/20 refactor code and check for bug when changing content of the file
     @Override
-    public void updateContent(List<Line> lines) {
-        List<List<Object>> sheetList = new ArrayList<>();
+    public void updateContent(List<Line> lines, String sheetId) {
         try {
-            for (Line line : lines) {
-                if (!(line.getModificationState() instanceof Unchanged))
-                    sheetList.add(Arrays.asList(line.getModificationState().getContent()));
+            List<List<Object>> sheetList = generateContentFrom(lines);
+            String name = String.format("Tháng %d - %s", LocalDate.now().getMonthValue(), sheetId);
+            for(Line line : lines){
+                sheetService
+                        .update(sheetList, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk", name
+                                , line.getModificationState().getRange('A'));
             }
-            sheetService.append(sheetList, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk",
-                    String.format("Tháng %d", LocalDate.now().getMonthValue()));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void updateContent(List<Line> mods, String range) {
-        List<List<Object>> sheetList = new ArrayList<>();
-        try {
-            List<Object> contents = new ArrayList<>();
-            mods.stream().forEach(modification -> {
-                contents.add(modification.getContent());
-            });
-            sheetList.add(contents);
-            sheetService.append(sheetList, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk",
-                    String.format("Tháng %d", LocalDate.now().getMonthValue()), range);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

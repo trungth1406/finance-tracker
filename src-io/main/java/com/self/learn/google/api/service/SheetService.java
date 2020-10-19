@@ -30,9 +30,9 @@ public interface SheetService {
 
     List<List<Object>> read(String spreadSheetId, String sheetId, String range) throws IOException;
 
-    void append(List<List<Object>> values, String spreadSheetId, String sheetId) throws IOException;
+    void   append(List<List<Object>> values, String spreadSheetId, String sheetId) throws IOException;
 
-    void append(List<List<Object>> values, String spreadSheetId, String sheetId, String range) throws IOException;
+    void update(List<List<Object>> values, String spreadSheetId, String sheetId, String range) throws IOException;
 
     void appendRanges(List<List<Object>> values, String spreadSheetId, String sheetId, String range) throws IOException;
 

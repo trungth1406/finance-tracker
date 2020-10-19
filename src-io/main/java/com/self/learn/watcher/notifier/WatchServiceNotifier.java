@@ -41,7 +41,7 @@ public final class WatchServiceNotifier implements Runnable, EventNotifier {
         this.eventObserver.add(new EventHandler());
         while (true) {
             try {
-                if (!((key = watchService.take()) != null)) break;
+                if ((key = watchService.take()) == null) break;
                 for (WatchEvent<?> event : key.pollEvents()) {
                     System.out.println("Event kind:" + event.kind() + ". File affected: " + event.context() + ".");
                     this.notifyRequest(event);
