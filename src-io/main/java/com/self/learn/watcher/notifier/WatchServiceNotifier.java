@@ -54,7 +54,11 @@ public final class WatchServiceNotifier implements Runnable, EventNotifier {
     }
 
     public static void main(String[] args) {
-        new Thread(WatchServiceNotifier.from(Paths.get("/Users/trungtran/Personal/Projects/finance-tracker-core/"),null)).start();
+        new Thread(
+                WatchServiceNotifier
+                        .from(Paths.
+                                get("/Users/trungtran/Desktop/chi-tieu"),null))
+                .start();
     }
 
     public void notifyRequest(WatchEvent watchEvent) {

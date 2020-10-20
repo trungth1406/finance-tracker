@@ -66,6 +66,7 @@ public abstract class ModificationState {
     public ModificationState processContent() {
         this.content = this.content
                 .replace("-", "")
+                .replace("+","")
                 .trim();
         return this;
     }
@@ -122,7 +123,7 @@ public abstract class ModificationState {
         for (String elem : diff.split(" ")) {
             sb.append(elem);
         }
-        String newContent = sb.reverse().toString();
+        String newContent = sb.reverse().toString().replace("-","").trim();
         if (newContent.contains("+") && newContent.contains("-")) {
             return new Update(lineNumber, newContent);
         } else if (newContent.contains("-")) {

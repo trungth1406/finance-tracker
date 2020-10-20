@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AbstractEventHandler {
 
     protected static final AtomicInteger integer = new AtomicInteger(1);
-    protected static final String CACHE_NAME = "fileVersion";
+
     protected CachingProxyImpl cachingProxy = CachingProxyImpl.getInstance();
     protected List<ContentObserver> observers = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public abstract class AbstractEventHandler {
     }
 
     protected String getCacheName(String fileName) {
-        return String.format("%s_%s_v_%d", CACHE_NAME, fileName, 1);
+        return String.format("%s_v_%d",  fileName, 1);
     }
 
 

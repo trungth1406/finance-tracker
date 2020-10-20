@@ -31,10 +31,9 @@ public class NewFileHandler extends AbstractEventHandler implements EventHandle 
                 newVersion.add(line);
             }
             this.observers.stream().forEach(observer -> observer.create(newVersion,fileName));
+            this.cachingProxy.createNewCache(this.getCacheName(fileName), new ArrayDeque<>(newVersion));
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            this.cachingProxy.createNewCache(this.getCacheName(fileName), new ArrayDeque<>(newVersion));
         }
     }
 }

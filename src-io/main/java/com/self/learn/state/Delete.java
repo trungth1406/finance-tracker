@@ -19,7 +19,7 @@ public class Delete extends ModificationState {
      * @return
      */
     public String[] getContent() {
-        return new String[]{"", "", "", ""};
+        return new String[]{" ", " ", " ", " "};
     }
 
 }

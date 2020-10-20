@@ -19,14 +19,7 @@ public final class GoogleSheetObserver implements ContentObserver<List<Line>> {
         this.sheetService = sheetService;
     }
 
-    private static List<List<Object>> generateContentFrom(List<Line> lines) {
-        List<List<Object>> sheetList = new ArrayList<>();
-        for (Line line : lines) {
-            if (!(line.getModificationState() instanceof Unchanged))
-                sheetList.add(Arrays.asList(line.getModificationState().getContent()));
-        }
-        return sheetList;
-    }
+
 
     private static List<List<Object>> generateNewContentFrom(List<Line> lines) {
         List<List<Object>> sheetList = new ArrayList<>();
@@ -50,16 +43,19 @@ public final class GoogleSheetObserver implements ContentObserver<List<Line>> {
         }
     }
 
-    // STOPSHIP: 10/19/20 refactor code and check for bug when changing content of the file
+    // STOPSHIP: 10/19/20 refactor code and check for bug when changing content of the file. Check for Caching problem
     @Override
     public void updateContent(List<Line> lines, String sheetId) {
         try {
-            List<List<Object>> sheetList = generateContentFrom(lines);
             String name = String.format("Tháng %d - %s", LocalDate.now().getMonthValue(), sheetId);
+
             for(Line line : lines){
-                sheetService
-                        .update(sheetList, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk", name
-                                , line.getModificationState().getRange('A'));
+                if (!(line.getModificationState() instanceof Unchanged)){
+                    List<List<Object>> changes = Arrays.asList(Arrays.asList(line.getModificationState().getContent()));
+                    sheetService
+                            .update(changes, "12TqYhXjfbVDt6C8zUjyBbgUbGJmhNJ4Mly1Lgi8gsgk", name
+                                    , line.getModificationState().getRange('A'));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

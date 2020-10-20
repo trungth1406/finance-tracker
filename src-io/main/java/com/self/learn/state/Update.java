@@ -15,7 +15,7 @@ public class Update extends ModificationState {
 
     @Override
     public String[] getContent() {
-        ArrayDeque<String> queue = new ArrayDeque<>(Arrays.asList(this.content.split(" ")));
+        ArrayDeque<String> queue = new ArrayDeque<>(Arrays.asList(this.content.split("")));
         StringBuilder sb = new StringBuilder();
         while(queue.size() > 0){
             String popped = queue.pop();

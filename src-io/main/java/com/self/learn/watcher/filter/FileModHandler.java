@@ -19,9 +19,12 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
         return new FileModHandler(Arrays.asList(observers));
     }
 
+
+    // STOPSHIP: 10/20/20 Check for bug when changes were made in a file and line content is now incorrect
     @Override
     public void process(String fileName) {
         Queue<Line> cachedVersion = this.cachingProxy.getLastCachedContent(this.getCacheName(fileName));
+        if (cachedVersion == null) return;
         File modified = new File(fileName);
         if (modified.isDirectory())
             return;
@@ -35,6 +38,7 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
                 newVersion.add(line);
             }
 
+            List<Line> lines = new ArrayList<>();
             Line first, second;
             ModificationState mod;
             while (newVersion.size() > 0 && cachedVersion.size() > 0) {
@@ -42,12 +46,16 @@ public class FileModHandler extends AbstractEventHandler implements EventHandle,
                 second = cachedVersion.remove();
                 mod = first.getModificationState().diff(second.getModificationState());
                 first.changeState(mod);
+                lines.add(first);
             }
 
-            newVersion.forEach(remainLine ->
-                    remainLine.changeState(new Create(remainLine.getLineNumber(), remainLine.getContent())));
+            newVersion.forEach(remainLine -> {
+                        remainLine.changeState(new Create(remainLine.getLineNumber(), remainLine.getContent()));
+                        lines.add(remainLine);
+                    }
+            );
 
-            observers.forEach(contentObserver -> contentObserver.updateContent(new ArrayList<>(newVersion),fileName));
+            observers.forEach(contentObserver -> contentObserver.updateContent(lines, fileName));
             this.cachingProxy.updateCacheContent(this.getCacheName(fileName), newVersion);
         } catch (IOException e) {
             e.printStackTrace();
