@@ -11,12 +11,8 @@ public class Create extends ModificationState {
 
     @Override
     public String[] getContent() {
-        this.content = this.content.replace("+", " ");
+        this.content = this.content.replace("+", "");
         return super.getContent();
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return new Create(this.lineNumer, this.content);
-    }
 }
